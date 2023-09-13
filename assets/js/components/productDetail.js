@@ -1,4 +1,5 @@
 import {addToCart} from "./cart.js"
+import {getItemCard} from "./cart.js"
 
 function productDetail (product){
     const productDOM = document.querySelector('.products__container')
@@ -81,7 +82,9 @@ function productDetail (product){
     const colorsDOM = document.querySelectorAll('.color') 
     const errorColorDOM = document.querySelector('.errSelectColor') 
     const errorSizeDOM = document.querySelector('.errSelectSize') 
-    
+    const modal = document.querySelector('.modal')
+    const modalMessage = document.querySelector('.modal__message')
+    const modalTitle = document.querySelector('.modal__title')
 
     //FUNCIONES
     
@@ -158,12 +161,10 @@ function productDetail (product){
         })
     }
      
-    // function showStock(pColor, pSize){
-    //     const arrColor = product.colors_sizes.find(color => color.code === pColor)
-    //     const stock = arrColor.find(size => size.id === pSize).stock
-        
-    //     stockDOM.innerHTML=stock    
-    // }
+    modal.addEventListener('click', e =>{
+        modal.classList.remove('modal--show')
+    })
+    
     //EVENTOS
 
     productDOM.addEventListener('click',(e)=>{
@@ -283,10 +284,21 @@ function productDetail (product){
                 errorSizeDOM.classList.remove('error--hidden')
             }
 
-            if (errCon===2){
+            if (errCon===2){ 
+                const varId = product.id
                 const varDataSizeId = +selectedSizeDOM.dataset.sizeid
                 const varDataColorCode = selectedColorDOM.dataset.colorcode
-                addToCart(product.id,varDataColorCode,varDataSizeId)
+                const arrColor = product.colors_sizes.find(color => color.code === varDataColorCode)  
+                const Size = arrColor.sizes.find(size => size.id === varDataSizeId) 
+                const itemCard = getItemCard(varId, varDataColorCode, varDataSizeId)
+                
+                if ((Size.stock - itemCard.qty ) < 1 ){
+                    modal.classList.add('modal--show')
+                    modalTitle.innerHTML='Inventario límitado.'
+                    modalMessage.innerHTML= "Solamente tenemos " + Size.stock + (Size.stock===1 ? ' árticulo disponible.': ' árticulos disponibles.')                     
+                } else {
+                    addToCart(product.id,varDataColorCode,varDataSizeId)
+                }
             }
         }
     })

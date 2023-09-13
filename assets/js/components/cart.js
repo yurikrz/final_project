@@ -1,4 +1,3 @@
-
 const ls = window.localStorage
 let cart = JSON.parse(ls.getItem('cart')) || []
 
@@ -19,6 +18,17 @@ export function addToCart (id, colorCode, sizeId, qty = 1){
 function updateCart(cart){
      ls.setItem('cart', JSON.stringify(cart))
      showItemCounts()
+}
+
+export function getItemCard(id, colorCode, sizeId){
+    const itemFinded = cart.find( i => i.id === id && i.colorCode === colorCode && i.sizeId === sizeId)
+    
+    if (itemFinded) {
+        return itemFinded
+    } else {
+        return {qty: 0}
+    }
+        
 }
 
 export function showItemCounts (){
@@ -258,5 +268,3 @@ export function cartMain (db){
         checkout()
     })
 }
-
-// export default cart

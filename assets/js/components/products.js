@@ -65,4 +65,3 @@ export function productById(id){
     ls.setItem('db',JSON.stringify(db))
     return product
 }
-
