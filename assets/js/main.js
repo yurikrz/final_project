@@ -6,16 +6,11 @@ import {showItemCounts} from './components/cart.js'
 //Loader
 loader()
 
-console.log('cargo loader')
 //Mostrar Menu
 showMenu()
-
-console.log('cargo menu')
 
 //const {db, printProducts} = products(await getProducts())
 products()
 
-
-console.log('cargo productos')
 
 showItemCounts()
